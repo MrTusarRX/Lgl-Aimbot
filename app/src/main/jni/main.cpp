@@ -118,12 +118,7 @@ void *get_myPlayer(void *player) {
 void (* old_myupdate)(void *Player);
 void myupdate(void *Player) {
 	if(Player != NULL){
-		 /*if (ESP) {
-       
-            espManager->tryAddEnemy(Player);
-        
-	}
-	*/
+		 
 	}
 	get_myPlayer(Player);
 	return old_myupdate(Player);
@@ -149,7 +144,7 @@ void _update(void *player) {
         Vector3 enemyLocation = get_position(getTransform(player));
         Vector3 CorrectPlayerPos = WorldToScreenPoint(camera, PlayerLocation);
         Vector3 CorrectEnemyPos = WorldToScreenPoint(camera, enemyLocation);
-
+//closest enemy chechker
         float distance = Vector3::Distance(CorrectPlayerPos, CorrectEnemyPos);
         if (distance < closestDistance) {
             closestDistance = distance;
@@ -198,11 +193,11 @@ void *hack_thread(void *) {
     } while (!isLibraryLoaded (OBFUSCATE("libMyLibName.so")));
    
 	
-			MSHookFunction((void *) getAbsoluteAddress("libil2cpp.so", 0x2AD358), (void *) &myupdate, (void **) &old_myupdate);
+			MSHookFunction((void *) getAbsoluteAddress("libil2cpp.so", 0x2AD358), (void *) &myupdate, (void **) &old_myupdate); //my update 
 	
-		MSHookFunction((void *) getAbsoluteAddress("libil2cpp.so", 0x294160), (void *) &_update, (void **) &update);
-		MSHookFunction((void *) getAbsoluteAddress("libil2cpp.so", 0x291FB0), (void *) &Player_ondestroy, (void **) &old_Player_ondestroy);
-		set_rotation = (void (*)(void*, Quaternion))getAbsoluteAddress("libil2cpp.so", 0x72FBFC);
+		MSHookFunction((void *) getAbsoluteAddress("libil2cpp.so", 0x294160), (void *) &_update, (void **) &update);//enemy update
+		MSHookFunction((void *) getAbsoluteAddress("libil2cpp.so", 0x291FB0), (void *) &Player_ondestroy, (void **) &old_Player_ondestroy);//enemy destroy 
+		set_rotation = (void (*)(void*, Quaternion))getAbsoluteAddress("libil2cpp.so", 0x72FBFC); //set_rotation_Injected
 	
 		
 	return NULL;
